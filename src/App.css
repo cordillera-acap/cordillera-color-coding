@@ -1,0 +1,52 @@
+.rainfall-alert-system {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  
+  /* Flexbox for vertical and horizontal centering */
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  height: auto;            /* Take full height of the viewport */
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+#legend {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+#legend div {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+#legend span {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+#map-container {
+  position: relative;
+  width: 1050px;
+  height: 600px;
+  margin-top: 20px;
+}
+
+.municipality {
+  position: absolute;
+  height: 1300px;
+  top: 0;
+  left: 0;
+  transition: filter 0.3s ease;
+  z-index: 1;
+  border: 2px solid black;
+  padding: 20px;
+
+}
