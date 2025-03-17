@@ -43,7 +43,6 @@ const RainfallAlertSystem = () => {
             });
 
             setMunicipalities(extractedMunicipalities);
-            console.log(extractedMunicipalities);
         };
 
         reader.readAsBinaryString(file);
