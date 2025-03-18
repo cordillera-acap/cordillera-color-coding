@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import '../App.css';
+import html2canvas from 'html2canvas'; // Import html2canvas
 
 const RainfallAlertSystem = () => {
     const [municipalities, setMunicipalities] = useState([]);
     const [fileName, setFileName] = useState('');
+    const [imageName, setImageName] = useState('map-image'); // State to hold the custom filename
+
+    // Function to handle the filename input change
+    const handleImageNameChange = (e) => {
+        setImageName(e.target.value); // Update the filename state with the input value
+    };
 
     const targetProvinces = [
         "Abra", "Apayao", "Benguet", "Ifugao", "Kalinga", "Mountain Province"
@@ -57,7 +64,7 @@ const RainfallAlertSystem = () => {
         "Luna": "Apayao",
         "Pudtol": "Apayao",
         "Santa_Marcela": "Apayao",
-    
+
         // Benguet
         "Atok": "Benguet",
         "Bakun": "Benguet",
@@ -73,7 +80,7 @@ const RainfallAlertSystem = () => {
         "Mankayan": "Benguet",
         "Sablan": "Benguet",
         "Tublay": "Benguet",
-    
+
         // Ifugao
         "Alfonso_Lista": "Ifugao",
         "Aguinaldo": "Ifugao",
@@ -86,7 +93,7 @@ const RainfallAlertSystem = () => {
         "Lagawe": "Ifugao",
         "Mayoyao": "Ifugao",
         "Tinoc": "Ifugao",
-    
+
         // Kalinga
         "Tabuk_City": "Kalinga",
         "Pinukpuk": "Kalinga",
@@ -96,7 +103,7 @@ const RainfallAlertSystem = () => {
         "Lubuagan": "Kalinga",
         "Rizal": "Kalinga",
         "Tinglayan": "Kalinga",
-    
+
         // Mountain Province
         "Bauko": "MP",
         "Barlig": "MP",
@@ -108,11 +115,11 @@ const RainfallAlertSystem = () => {
         "Sagada": "MP",
         "Natonin": "MP",
         "Paracelis": "MP",
-    
+
         // Abra
         "Bangued": "Abra",
         "Peñarrubia": "Abra",
-        "Pe├â┬▒arrubia" : "Abra",
+        "Pe├â┬▒arrubia": "Abra",
         "Tayum": "Abra",
         "Boliney": "Abra",
         "Bucay": "Abra",
@@ -145,59 +152,87 @@ const RainfallAlertSystem = () => {
 
         switch (rainfall) {
             case 'NO RAIN':
-                colorFolder = 'Green';
+                colorFolder = 'Red';
                 break;
             case 'LIGHT RAINS':
                 colorFolder = 'Yellow';
                 break;
             case 'MODERATE RAINS':
-                colorFolder = 'Orange';
+                colorFolder = 'Green';
                 break;
             case 'HEAVY RAINS':
-                colorFolder = 'Red';
+                colorFolder = 'Blue';
                 break;
             default:
-                colorFolder = 'Unknown';
+                colorFolder = 'White';
         }
 
         const province = provinceData[municipality] || 'UnknownProvince';
-        console.log(`/Images/${province}/${colorFolder}/${municipality}.png`)
+        console.log(`/Map/Municipality_shapes_colored/${province}/${colorFolder}/${municipality}.png`)
 
-        return `/Images/${province}/${colorFolder}/${municipality}.png`;
+        return `/Map/Municipality_shapes_colored/${province}/${colorFolder}/${municipality}.png`;
+    };
+
+
+    // Function to capture the map-container as an image with a custom name
+    const captureMapAsImage = () => {
+        const mapContainer = document.getElementById('map-container');
+        html2canvas(mapContainer).then((canvas) => {
+            // Convert the canvas to an image
+            const imageUrl = canvas.toDataURL('image/png');
+
+            // Create a temporary link to trigger the download with custom filename
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = imageName ? `${imageName}.png` : 'map-image.png'; // Use custom filename or default
+            link.click();
+        });
     };
 
     return (
         <div className="rainfall-alert-system">
             <div>
-            <h1>Rainfall Alert System</h1>
-            <div>
-                <input 
-                    type="file" 
-                    accept=".xlsx, .xls" 
-                    onChange={handleFileUpload} 
-                />
-                <p>{fileName ? `Uploaded: ${fileName}` : 'No file uploaded yet'}</p>
-            </div>
+                <h1>Rainfall Alert System</h1>
+                <div>
+                    <input
+                        type="file"
+                        accept=".xlsx, .xls"
+                        onChange={handleFileUpload}
+                    />
+                    <p>{fileName ? `Uploaded: ${fileName}` : 'No file uploaded yet'}</p>
+                </div>
 
-            <div id="legend">
-                <div><span style={{ backgroundColor: 'green' }}></span> NO RAIN</div>
-                <div><span style={{ backgroundColor: 'yellow' }}></span> LIGHT RAINS</div>
-                <div><span style={{ backgroundColor: 'orange' }}></span> MODERATE RAINS</div>
-                <div><span style={{ backgroundColor: 'red' }}></span> HEAVY RAINS</div>
-            </div>
+                <div id="legend">
+                    <div><span style={{ backgroundColor: 'green' }}></span> NO RAIN</div>
+                    <div><span style={{ backgroundColor: 'yellow' }}></span> LIGHT RAINS</div>
+                    <div><span style={{ backgroundColor: 'orange' }}></span> MODERATE RAINS</div>
+                    <div><span style={{ backgroundColor: 'red' }}></span> HEAVY RAINS</div>
+                </div>
             </div>
 
             <div id="map-container">
+            <img
+                    src='/Map/background-white.png'
+                    alt='white map'
+                    className='municipality'
+                    style={{ zIndex: -1 }}
+                />
                 {municipalities.map(([municipality, rainfall], index) => (
-                    <img 
-                        key={index} 
-                        id={municipality.replace(/\s+/g, '_')} 
-                        className="municipality" 
-                        alt={municipality} 
-                        src={getImagePath(municipality, rainfall)} 
+                    <img
+                        key={index}
+                        id={municipality.replace(/\s+/g, '_')}
+                        className="municipality"
+                        alt={municipality}
+                        src={getImagePath(municipality, rainfall)}
                     />
-                    
+
                 ))}
+                <img
+                    src='/Map/foreground-texts.png'
+                    alt='foreground municipality names'
+                    className='municipality'
+                    style={{ zIndex: 2 }}
+                />
             </div>
 
             <div>
@@ -207,6 +242,19 @@ const RainfallAlertSystem = () => {
                         <li key={index}>{mun} - {rain}</li>
                     ))}
                 </ul>
+            </div>
+            {/* Button to trigger capture */}
+            <button onClick={captureMapAsImage}>Capture Map as Image</button>
+            <div>
+                <label>
+                    <strong>Enter Image Name:</strong>
+                    <input
+                        type="text"
+                        value={imageName}
+                        onChange={handleImageNameChange}
+                        placeholder="Enter image name"
+                    />
+                </label>
             </div>
         </div>
     );
