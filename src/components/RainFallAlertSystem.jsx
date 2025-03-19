@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import '../App.css';
 import html2canvas from 'html2canvas'; // Import html2canvas
+import Button from 'react-bootstrap/Button';
+import { FaCamera, FaUpload } from 'react-icons/fa'; // Import the upload icon from React Icons
 
 const RainfallAlertSystem = () => {
     const [municipalities, setMunicipalities] = useState([]);
     const [fileName, setFileName] = useState('');
-    const [imageName, setImageName] = useState('map-image'); // State to hold the custom filename
-
-    // Function to handle the filename input change
-    const handleImageNameChange = (e) => {
-        setImageName(e.target.value); // Update the filename state with the input value
-    };
+    const [date, setDate] = useState('date'); // State to hold the custom filename
 
     const targetProvinces = [
         "Abra", "Apayao", "Benguet", "Ifugao", "Kalinga", "Mountain Province"
@@ -33,7 +30,42 @@ const RainfallAlertSystem = () => {
             if (data.length < 2) return;
 
             const extractedMunicipalities = [];
+            // Extract the date from merged cell (C6)
+            const dateCell = sheet['C6'];
+            if (dateCell && dateCell.w) {
+                const rawFormattedDate = dateCell.w; // The formatted date from Excel (e.g., '21-Mar')
 
+                // Convert "21-Mar" to "March 21, 2025" format (if in that format)
+                const dateParts = rawFormattedDate.split('-');
+                if (dateParts.length === 2) {
+                    const day = dateParts[0]; // "21"
+                    const monthStr = dateParts[1]; // "Mar"
+
+                    // Parse the month and construct a full date
+                    const monthMap = {
+                        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+                    };
+
+                    const month = monthMap[monthStr]; // Get the month number (0-indexed)
+
+                    // If the date has a valid month and day, we can create a date object
+                    if (month !== undefined) {
+                        const currentYear = new Date().getFullYear(); // Use current year or extract from sheet if available
+                        const formattedDate = new Date(currentYear, month, day);
+
+                        // Standardize the date format to "March 21, 2025"
+                        const standardDate = formattedDate.toLocaleDateString('en-US', {
+                            weekday: 'long', // "Monday"
+                            year: 'numeric', // "2025"
+                            month: 'long', // "March"
+                            day: 'numeric', // "21"
+                        });
+
+                        setDate(standardDate); // Set the image name to the full formatted date
+                    }
+                }
+            }
             data.slice(1).forEach(row => {
                 const municipalityRaw = row[1]; // Column B (index 1)
                 const rainfallRaw = row[6]; // Column G (index 6)
@@ -168,7 +200,6 @@ const RainfallAlertSystem = () => {
         }
 
         const province = provinceData[municipality] || 'UnknownProvince';
-        console.log(`/Map/Municipality_shapes_colored/${province}/${colorFolder}/${municipality}.png`)
 
         return `/Map/Municipality_shapes_colored/${province}/${colorFolder}/${municipality}.png`;
     };
@@ -184,34 +215,63 @@ const RainfallAlertSystem = () => {
             // Create a temporary link to trigger the download with custom filename
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = imageName ? `${imageName}.png` : 'map-image.png'; // Use custom filename or default
+            link.download = date ? `${date}.png` : 'map-image.png'; // Use custom filename or default
             link.click();
         });
     };
 
     return (
         <div className="rainfall-alert-system">
-            <div>
-                <h1>Rainfall Alert System</h1>
-                <div>
+                <h1>10-Day Rainfall Forecast System</h1>
+                <div> AMIA-Cordillera </div>
+                <div className='button-group'>
+                    {/* File Input with a Button */}
+                    {/* Hidden file input */}
                     <input
                         type="file"
                         accept=".xlsx, .xls"
+                        style={{ display: 'none' }} // Hide the file input
+                        id="file-input"
                         onChange={handleFileUpload}
                     />
-                    <p>{fileName ? `Uploaded: ${fileName}` : 'No file uploaded yet'}</p>
-                </div>
 
-                <div id="legend">
-                    <div><span style={{ backgroundColor: 'green' }}></span> NO RAIN</div>
-                    <div><span style={{ backgroundColor: 'yellow' }}></span> LIGHT RAINS</div>
-                    <div><span style={{ backgroundColor: 'orange' }}></span> MODERATE RAINS</div>
-                    <div><span style={{ backgroundColor: 'red' }}></span> HEAVY RAINS</div>
+                    {/* Button with Icon */}
+                    <Button
+                        variant="primary"
+                        size="md"
+                        onClick={() => document.getElementById('file-input').click()} // Trigger the file input click
+                    >
+                        <FaUpload style={{ marginRight: '8px' }} /> {/* Upload Icon */}
+                        Upload File
+                    </Button>
+                    {/* Capture Map as Image Button */}
+                    <Button variant="success" size="md" onClick={captureMapAsImage}>
+                        <FaCamera style={{ marginRight: '8px' }} />
+                        Capture Map as Image
+                    </Button>
                 </div>
-            </div>
 
             <div id="map-container">
-            <img
+                {/* Date Title */}
+                <p className='date'>
+                    {date.includes(',')
+                        ? (
+                            <>
+                                {date.split(',')[0]}<br />{/* First part before the comma */}
+                                {date.split(',').slice(1).join(',')} {/* Remaining parts after the comma */}
+                            </>
+                        )
+                        : date
+                    }
+                </p>
+                {/* Legend Container */}
+                <div id="legend">
+                    <div><span style={{ backgroundColor: 'red' }}></span> NO RAIN</div>
+                    <div><span style={{ backgroundColor: 'yellow' }}></span> LIGHT RAINS</div>
+                    <div><span style={{ backgroundColor: 'green' }}></span> MODERATE RAINS</div>
+                    <div><span style={{ backgroundColor: 'blue' }}></span> HEAVY RAINS</div>
+                </div>
+                <img
                     src='/Map/background-white.png'
                     alt='white map'
                     className='municipality'
@@ -233,28 +293,6 @@ const RainfallAlertSystem = () => {
                     className='municipality'
                     style={{ zIndex: 2 }}
                 />
-            </div>
-
-            <div>
-                <h2>Municipalities in the Region</h2>
-                <ul>
-                    {municipalities.map(([mun, rain], index) => (
-                        <li key={index}>{mun} - {rain}</li>
-                    ))}
-                </ul>
-            </div>
-            {/* Button to trigger capture */}
-            <button onClick={captureMapAsImage}>Capture Map as Image</button>
-            <div>
-                <label>
-                    <strong>Enter Image Name:</strong>
-                    <input
-                        type="text"
-                        value={imageName}
-                        onChange={handleImageNameChange}
-                        placeholder="Enter image name"
-                    />
-                </label>
             </div>
         </div>
     );

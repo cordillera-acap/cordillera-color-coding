@@ -5,48 +5,60 @@
   /* Flexbox for vertical and horizontal centering */
   display: flex;
   justify-content: center;  /* Center horizontally */
+  flex-direction: column;
   align-items: center;      /* Center vertically */
   height: auto;            /* Take full height of the viewport */
 }
 
-h1 {
-  margin-top: 20px;
+.button-group{
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.button-group Button{
+  margin: 0 5px;
+}
+
+
+.date{
+  font-size: 35px;
+  text-align: left;
+  margin: 40px 40px;
 }
 
 #legend {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  height: auto;
+  width: 34%;
+  margin: 50px 20px;
+  z-index: -1;
+  font-size: 18px;
 }
 
 #legend div {
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  margin: 10px;
 }
 
 #legend span {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
 }
 
 #map-container {
   position: relative;
-  width: 700px;
   height: 1340px;
-  margin-top: 20px;
+  width: 700px;
 }
 
 .municipality {
   position: absolute;
-  height: 1300px;
+  height: 1340px;
+  width: 700px;
   top: 0;
   left: 0;
-  transition: filter 0.3s ease;
   z-index: 1;
-  border: 2px solid black;
-  padding: 20px;
-
+  border: 5px solid black;
 }
