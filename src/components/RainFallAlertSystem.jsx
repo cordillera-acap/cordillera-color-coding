@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import '../App.css';
 import html2canvas from 'html2canvas'; // Import html2canvas
 import Button from 'react-bootstrap/Button';
-import { FaCamera, FaUpload } from 'react-icons/fa'; // Import the upload icon from React Icons
+import { FaCamera, FaInfoCircle, FaUpload } from 'react-icons/fa'; // Import the upload icon from React Icons
 
 const RainfallAlertSystem = () => {
     const [municipalities, setMunicipalities] = useState([]);
@@ -222,34 +222,40 @@ const RainfallAlertSystem = () => {
 
     return (
         <div className="rainfall-alert-system">
-                <h1>10-Day Rainfall Forecast System</h1>
-                <div> AMIA-Cordillera </div>
-                <div className='button-group'>
-                    {/* File Input with a Button */}
-                    {/* Hidden file input */}
-                    <input
-                        type="file"
-                        accept=".xlsx, .xls"
-                        style={{ display: 'none' }} // Hide the file input
-                        id="file-input"
-                        onChange={handleFileUpload}
-                    />
+            <h1>10-Day Rainfall Forecast System</h1>
+            <div> AMIA-Cordillera </div>
+            <div className='button-group'>
+                {/* File Input with a Button */}
+                {/* Hidden file input */}
+                <input
+                    type="file"
+                    accept=".xlsx, .xls"
+                    style={{ display: 'none' }} // Hide the file input
+                    id="file-input"
+                    onChange={handleFileUpload}
+                />
 
-                    {/* Button with Icon */}
-                    <Button
-                        variant="primary"
-                        size="md"
-                        onClick={() => document.getElementById('file-input').click()} // Trigger the file input click
-                    >
-                        <FaUpload style={{ marginRight: '8px' }} /> {/* Upload Icon */}
-                        Upload File
-                    </Button>
-                    {/* Capture Map as Image Button */}
-                    <Button variant="success" size="md" onClick={captureMapAsImage}>
-                        <FaCamera style={{ marginRight: '8px' }} />
-                        Capture Map as Image
-                    </Button>
-                </div>
+                {/* Button with Icon */}
+                <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => document.getElementById('file-input').click()} // Trigger the file input click
+                >
+                    <FaUpload style={{ marginRight: '8px' }} /> {/* Upload Icon */}
+                    Upload File
+                </Button>
+                {/* Capture Map as Image Button */}
+                <Button variant="success" size="md" onClick={captureMapAsImage}>
+                    <FaCamera style={{ marginRight: '8px' }} />
+                    Capture Map as Image
+                </Button>
+            </div>
+            <small> 
+                <FaInfoCircle /> The excel files can be downloaded at: 
+                <a href='https://bagong.pagasa.dost.gov.ph/climate/climate-prediction/10-day-climate-forecast' target='_blank'> 
+                    PAGASA 10-day-climate-forecast 
+                </a>
+            </small>
 
             <div id="map-container">
                 {/* Date Title */}
