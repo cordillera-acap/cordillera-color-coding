@@ -251,13 +251,13 @@ const RainfallAlertSystem = () => {
                     disabled={loading} // Disable button while uploading
                 >
                     <FaUpload style={{ marginRight: '8px' }} /> {/* Upload Icon */}
-                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Upload File'}
+                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Upload Excel File'}
                 </Button>
                 {/* Capture Map as Image Button */}
                 <Button variant="success" size="md" onClick={captureMapAsImage} disabled={loading} // Disable button while uploading
                 >
                     <FaCamera style={{ marginRight: '8px' }} />
-                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Capture Map as Image'}
+                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Save Image'}
                 </Button>
             </div>
             <small>
@@ -277,7 +277,7 @@ const RainfallAlertSystem = () => {
                                 {date.split(',').slice(1).join(',')} {/* Remaining parts after the comma */}
                             </>
                         )
-                        : date
+                        : "Date"
                     }
                 </p>
                 {/* Legend Container */}

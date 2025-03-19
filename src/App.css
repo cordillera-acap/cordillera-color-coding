@@ -1,27 +1,30 @@
 .rainfall-alert-system {
   font-family: Arial, sans-serif;
   text-align: center;
-  
+
   /* Flexbox for vertical and horizontal centering */
   display: flex;
-  justify-content: center;  /* Center horizontally */
+  justify-content: center;
+  /* Center horizontally */
   flex-direction: column;
-  align-items: center;      /* Center vertically */
-  height: auto;            /* Take full height of the viewport */
+  align-items: center;
+  /* Center vertically */
+  height: auto;
+  /* Take full height of the viewport */
 }
 
-.button-group{
+.button-group {
   display: flex;
   flex-direction: row;
   padding: 5px;
 }
 
-.button-group Button{
+.button-group Button {
   margin: 0 5px;
 }
 
 
-.date{
+.date {
   font-size: 35px;
   text-align: left;
   margin: 40px 40px;
@@ -61,4 +64,76 @@
   left: 0;
   z-index: 1;
   border: 5px solid black;
+}
+
+/* Media Query for Phone Screens */
+@media (max-width: 768px) {
+
+  /* Adjust the date text size and margin for smaller screens */
+  .date {
+    font-size: 17px;
+    /* Smaller font size */
+    margin: 15px;
+    /* Reduce margin */
+    text-align: left;
+    /* Center the date text */
+  }
+
+  /* Adjust the legend width and margin for smaller screens */
+  #legend {
+    width: 80%;
+    /* Increase width to 80% of screen */
+    margin: 5px 10px;
+    /* Reduce margin */
+    font-size: 10px;
+    /* Slightly smaller font size for mobile */
+  }
+
+  #legend div {
+    margin: 3px;
+    /* Reduce margin between legend items */
+  }
+
+  #legend span {
+    width: 20px;
+    /* Reduce the size of the color swatches */
+    height: 20px;
+    /* Adjust height */
+    margin-right: 8px;
+    /* Reduce margin */
+  }
+
+  /* Adjust the map container size for phones */
+  #map-container {
+    height: 600px;
+    /* Set a smaller height for mobile screens */
+    width: 100%;
+    /* Full width */
+  }
+
+  /* Adjust the municipality images for phones */
+  .municipality {
+    height: 600px;
+    /* Adjust height of municipality for smaller screens */
+    width: 100%;
+    /* Make the municipality image full width */
+  }
+
+  /* Adjust text for smaller screens */
+  .rainfall-alert-system h1 {
+    font-size: 24px;
+    /* Smaller font for heading */
+  }
+
+  .rainfall-alert-system .button-group {
+    flex-direction: column;
+    /* Stack the buttons vertically */
+    align-items: center;
+    /* Center buttons horizontally */
+  }
+
+  .rainfall-alert-system .button-group button {
+    margin-bottom: 10px;
+    /* Add space between buttons */
+  }
 }
