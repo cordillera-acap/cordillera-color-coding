@@ -105,7 +105,7 @@
 
   /* Adjust the map container size for phones */
   #map-container {
-    height: 600px;
+    height: 660px;
     /* Set a smaller height for mobile screens */
     width: 100%;
     /* Full width */
@@ -113,7 +113,7 @@
 
   /* Adjust the municipality images for phones */
   .municipality {
-    height: 600px;
+    height: 660px;
     /* Adjust height of municipality for smaller screens */
     width: 100%;
     /* Make the municipality image full width */
