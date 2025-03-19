@@ -4,11 +4,13 @@ import '../App.css';
 import html2canvas from 'html2canvas'; // Import html2canvas
 import Button from 'react-bootstrap/Button';
 import { FaCamera, FaInfoCircle, FaUpload } from 'react-icons/fa'; // Import the upload icon from React Icons
+import { Spinner } from 'react-bootstrap';
 
 const RainfallAlertSystem = () => {
     const [municipalities, setMunicipalities] = useState([]);
     const [fileName, setFileName] = useState('');
     const [date, setDate] = useState('date'); // State to hold the custom filename
+    const [loading, setLoading] = useState(false); // New state for tracking loading
 
     const targetProvinces = [
         "Abra", "Apayao", "Benguet", "Ifugao", "Kalinga", "Mountain Province"
@@ -19,6 +21,7 @@ const RainfallAlertSystem = () => {
         if (!file) return;
 
         setFileName(file.name);
+        setLoading(true); // Set loading to true when file is being uploaded
 
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -82,6 +85,7 @@ const RainfallAlertSystem = () => {
             });
 
             setMunicipalities(extractedMunicipalities);
+            setLoading(false); // Set loading to false after processing is done
         };
 
         reader.readAsBinaryString(file);
@@ -207,6 +211,8 @@ const RainfallAlertSystem = () => {
 
     // Function to capture the map-container as an image with a custom name
     const captureMapAsImage = () => {
+        setLoading(true); // Set loading to true during image capture
+
         const mapContainer = document.getElementById('map-container');
         html2canvas(mapContainer).then((canvas) => {
             // Convert the canvas to an image
@@ -217,6 +223,8 @@ const RainfallAlertSystem = () => {
             link.href = imageUrl;
             link.download = date ? `${date}.png` : 'map-image.png'; // Use custom filename or default
             link.click();
+
+            setLoading(false); // Set loading to false after the image is downloaded
         });
     };
 
@@ -240,20 +248,22 @@ const RainfallAlertSystem = () => {
                     variant="primary"
                     size="md"
                     onClick={() => document.getElementById('file-input').click()} // Trigger the file input click
+                    disabled={loading} // Disable button while uploading
                 >
                     <FaUpload style={{ marginRight: '8px' }} /> {/* Upload Icon */}
-                    Upload File
+                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Upload File'}
                 </Button>
                 {/* Capture Map as Image Button */}
-                <Button variant="success" size="md" onClick={captureMapAsImage}>
+                <Button variant="success" size="md" onClick={captureMapAsImage} disabled={loading} // Disable button while uploading
+                >
                     <FaCamera style={{ marginRight: '8px' }} />
-                    Capture Map as Image
+                    {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Capture Map as Image'}
                 </Button>
             </div>
-            <small> 
-                <FaInfoCircle /> The excel files can be downloaded at: 
-                <a href='https://bagong.pagasa.dost.gov.ph/climate/climate-prediction/10-day-climate-forecast' target='_blank'> 
-                    PAGASA 10-day-climate-forecast 
+            <small>
+                <FaInfoCircle /> The excel files can be downloaded at:
+                <a href='https://bagong.pagasa.dost.gov.ph/climate/climate-prediction/10-day-climate-forecast' target='_blank'>
+                    PAGASA 10-day-climate-forecast
                 </a>
             </small>
 
