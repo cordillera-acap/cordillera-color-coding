@@ -267,7 +267,7 @@ const RainfallAlertSystem = () => {
                 </a>
             </small>
 
-            <div id="map-container">
+            <div>
                 {/* Date Title */}
                 <p className='date'>
                     {date.includes(',')
@@ -281,12 +281,15 @@ const RainfallAlertSystem = () => {
                     }
                 </p>
                 {/* Legend Container */}
-                <div id="legend">
+                <div id="legend" className='d-flex flex-collumn'>
                     <div><span style={{ backgroundColor: 'red' }}></span> NO RAIN</div>
                     <div><span style={{ backgroundColor: 'yellow' }}></span> LIGHT RAINS</div>
                     <div><span style={{ backgroundColor: 'green' }}></span> MODERATE RAINS</div>
                     <div><span style={{ backgroundColor: 'blue' }}></span> HEAVY RAINS</div>
                 </div>
+            </div>
+
+            <div id="map-container">
                 <img
                     src='/Map/background-white.png'
                     alt='white map'
