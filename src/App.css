@@ -45,21 +45,25 @@
   margin-right: 10px;
 }
 
-#map-container {
-  position: relative;
-  height: 1340px;
+.municipality, .municipality-container {
+  position: absolute;
+  height: 1380px;
   width: 700px;
+  top: 90px;
+  left: 95px;
+  z-index: 2; 
 }
 
-.municipality {
-  position: absolute;
-  height: 1340px;
-  width: 700px;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  border: 5px solid black;
+#grid-coordinates {
+  position: relative;
+  height: 1550px;
+  width: 890px;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-image: url("/Map/grid-coordinates.png");
+  z-index: -2;
 }
+
 
 /* Media Query for Phone Screens */
 @media (max-width: 768px) {
@@ -96,22 +100,6 @@
     /* Adjust height */
     margin-right: 8px;
     /* Reduce margin */
-  }
-
-  /* Adjust the map container size for phones */
-  #map-container {
-    height: 700px;
-    /* Set a smaller height for mobile screens */
-    width: 100%;
-    /* Full width */
-  }
-
-  /* Adjust the municipality images for phones */
-  .municipality {
-    height: 700px;
-    /* Adjust height of municipality for smaller screens */
-    width: 100%;
-    /* Make the municipality image full width */
   }
 
   /* Adjust text for smaller screens */

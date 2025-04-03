@@ -209,24 +209,34 @@ const RainfallAlertSystem = () => {
     };
 
 
-    // Function to capture the map-container as an image with a custom name
     const captureMapAsImage = () => {
-        setLoading(true); // Set loading to true during image capture
-
-        const mapContainer = document.getElementById('map-container');
-        html2canvas(mapContainer).then((canvas) => {
-            // Convert the canvas to an image
+        setLoading(true); // Start loading
+    
+        const mapContainer = document.getElementById('grid-coordinates');
+    
+        html2canvas(mapContainer, {
+            useCORS: true, // Capture external images
+            allowTaint: true, // Allow tainted resources
+            backgroundColor: null, // Preserve transparency
+            scale: 2, // Improve resolution
+            logging: false
+        }).then((canvas) => {
             const imageUrl = canvas.toDataURL('image/png');
-
-            // Create a temporary link to trigger the download with custom filename
+    
+            // Create a download link
             const link = document.createElement('a');
             link.href = imageUrl;
-            link.download = date ? `${date}.png` : 'map-image.png'; // Use custom filename or default
+            link.download = date ? `${date}.png` : 'map-image.png';
             link.click();
-
-            setLoading(false); // Set loading to false after the image is downloaded
+    
+            setLoading(false); // Stop loading
+        }).catch(error => {
+            console.error("Error capturing the map:", error);
+            setLoading(false);
         });
     };
+    
+    
 
     return (
         <div className="rainfall-alert-system">
@@ -288,8 +298,7 @@ const RainfallAlertSystem = () => {
                     <div><span style={{ backgroundColor: 'blue' }}></span> HEAVY RAINS</div>
                 </div>
             </div>
-
-            <div id="map-container">
+            <div id='grid-coordinates'>
                 <img
                     src='/Map/background-white.png'
                     alt='white map'
