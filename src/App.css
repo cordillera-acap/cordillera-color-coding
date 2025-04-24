@@ -26,7 +26,10 @@
 
 .date {
   font-size: 35px;
-  text-align: center;
+  position: absolute;
+  top: 200px;
+  left: 120px;
+  font-weight: bold;
 }
 
 #legend {

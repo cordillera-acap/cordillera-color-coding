@@ -183,6 +183,25 @@ const RainfallAlertSystem = () => {
         "Villaviciosa": "Abra"
     };
 
+    // Ilocano weekday mapping
+    const ilocanoWeekdays = {
+        'Monday': 'Lunes',
+        'Tuesday': 'Martes',
+        'Wednesday': 'Miyerkules',
+        'Thursday': 'Huwebes',
+        'Friday': 'Biernes',
+        'Saturday': 'Sabado',
+        'Sunday': 'Domingo'
+    };
+
+    // Helper to translate weekday in the date string
+    const getIlocanoDate = (dateStr) => {
+        if (!dateStr.includes(',')) return dateStr;
+        const [weekday, ...rest] = dateStr.split(',');
+        const ilocanoWeekday = ilocanoWeekdays[weekday.trim()] || weekday;
+        return [ilocanoWeekday, ...rest].join(',');
+    };
+
     const getImagePath = (municipality, rainfall) => {
         let colorFolder = '';
 
@@ -278,18 +297,6 @@ const RainfallAlertSystem = () => {
             </small>
 
             <div>
-                {/* Date Title */}
-                <p className='date'>
-                    {date.includes(',')
-                        ? (
-                            <>
-                                {date.split(',')[0]}<br />{/* First part before the comma */}
-                                {date.split(',').slice(1).join(',')} {/* Remaining parts after the comma */}
-                            </>
-                        )
-                        : "Date"
-                    }
-                </p>
                 {/* Legend Container */}
                 <div id="legend" className='d-flex flex-collumn'>
                     <div><span style={{ backgroundColor: 'red' }}></span> NO RAIN</div>
@@ -299,8 +306,20 @@ const RainfallAlertSystem = () => {
                 </div>
             </div>
             <div id='grid-coordinates'>
+                                {/* Date Title */}
+                                <p className='date'>
+                    {date.includes(',')
+                        ? (
+                            <>
+                                {getIlocanoDate(date).split(',')[0]}<br />{/* First part before the comma */}
+                                {getIlocanoDate(date).split(',').slice(1).join(',')} {/* Remaining parts after the comma */}
+                            </>
+                        )
+                        : "Date"
+                    }
+                </p>
                 <img
-                    src='/Map/background-white.png'
+                    src='/Map/background-items.png'
                     alt='white map'
                     className='municipality'
                     style={{ zIndex: -1 }}
