@@ -106,7 +106,7 @@ const RainfallAlertSystem = () => {
         "Bakun": "Benguet",
         "Itogon": "Benguet",
         "Buguias": "Benguet",
-        "Baguio_City": "Benguet",
+        "City_of_Baguio": "Benguet",
         "La_Trinidad": "Benguet",
         "Tuba": "Benguet",
         "Bokod": "Benguet",
@@ -131,7 +131,7 @@ const RainfallAlertSystem = () => {
         "Tinoc": "Ifugao",
 
         // Kalinga
-        "Tabuk_City": "Kalinga",
+        "City_of_Tabuk": "Kalinga",
         "Pinukpuk": "Kalinga",
         "Balbalan": "Kalinga",
         "Pasil": "Kalinga",
