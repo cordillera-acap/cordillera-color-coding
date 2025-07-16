@@ -155,7 +155,7 @@ const RainfallAlertSystem = () => {
         // Abra
         "Bangued": "Abra",
         "Peñarrubia": "Abra",
-        "Pe├â┬▒arrubia": "Abra",
+        "PeÃ±arrubia": "Abra",
         "Tayum": "Abra",
         "Boliney": "Abra",
         "Bucay": "Abra",
@@ -291,7 +291,7 @@ const RainfallAlertSystem = () => {
             </div>
             <small>
                 <FaInfoCircle /> The excel files can be downloaded at:
-                <a href='https://bagong.pagasa.dost.gov.ph/climate/climate-prediction/10-day-climate-forecast' target='_blank'>
+                <a href='https://pubfiles.pagasa.dost.gov.ph/pagasaweb/files/climate/tendayweatheroutlook/' target='_blank'>
                     PAGASA 10-day-climate-forecast
                 </a>
             </small>
